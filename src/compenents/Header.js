@@ -1,7 +1,7 @@
 
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, LightningBoltIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+
+import { Disclosure} from "@headlessui/react";
+import {   MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 function Header() {
   const navigation = [

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   getGenres,
   getGenresByMovies,
-  getPopulerMovies,
+ 
 } from "../services/api";
 
 function Movies() {

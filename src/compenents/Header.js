@@ -1,13 +1,10 @@
-
-
-import { Disclosure} from "@headlessui/react";
-import {   MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Disclosure } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 function Header() {
   const navigation = [
-    { name: "Home", to: "/", current: true },
-    { name: "Movies", to: "/movies" ,current: false },
-    
+    { name: "Ana Sayfa", to: "/", current: false },
+    { name: "Filmler", to: "/movies", current: false },
   ];
 
   function classNames(...classes) {
@@ -33,20 +30,12 @@ function Header() {
                 </div>
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex-shrink-0 flex items-center">
-                    <img
-                      className="block lg:hidden h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                      alt="Workflow"
-                    />
-                    <img
-                      className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                      alt="Workflow"
-                    />
+                    <h1 className=" text-white font-semibold text-lg">
+                      Movies App
+                    </h1>
                   </div>
                   <div className="hidden sm:block sm:ml-6">
                     <div className="flex space-x-4">
-                 
                       {navigation.map((item) => (
                         <Link
                           key={item.name}

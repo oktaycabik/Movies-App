@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  getGenres,
-  getGenresByMovies,
- 
-} from "../services/api";
+import { getGenres, getGenresByMovies, searchMovie } from "../services/api";
 
 function Movies() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [genre, setGenre] = useState("");
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(1);
   const [imbdPoint, setimbdPoint] = useState("1 ");
   const [sort, setSort] = useState("");
-  
-  
-  
+  const [searchMovies, setSearchMovies] = useState("");
   useEffect(() => {
     (async () => {
       const gen = await getGenres();
-      const dis = await getGenresByMovies(genre, sort, imbdPoint,page);
       setGenres(gen);
-
+      const dis = await getGenresByMovies(genre, sort, imbdPoint, page);
       setMovies(dis);
+      const search = await searchMovie(searchMovies);
+      setMovies(search);
     })();
-  }, [genre, sort, imbdPoint,page]);
-  console.log("movies", imbdPoint);
+  }, [genre, sort, imbdPoint, page, searchMovies]);
+
   return (
-    <div className="mx-36 mt-6 ">
-      <div className="flex flex-row mx-8  ">
+    <div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8 ">
+      <div className="flex flex-row mx-auto  px-4  sm:px-6 lg:max-w-7xl lg:px-8 ">
         <div>
           <div className="d-flex col-md-10 justify-content-end  ">
             <select
@@ -91,13 +86,24 @@ function Movies() {
             </select>
           </div>
         </div>
+        <input
+          placeholder="Aramak istedğiniz filmi girin"
+          className="ml-2  block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          value={searchMovies}
+          onChange={(e) => setSearchMovies(e.target.value)}
+          type="text"
+        />
       </div>
+
       <div className="bg-white">
         <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {movies.map((movie) => (
               <div key={movie.id} className="group relative">
-                <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                <div
+                  style={{ height: 380 }}
+                  className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none"
+                >
                   <img
                     src={`https://www.themoviedb.org/t/p/w220_and_h330_face${movie?.poster_path}`}
                     alt="qwewq"
@@ -127,39 +133,51 @@ function Movies() {
               </div>
             ))}
           </div>
-          <nav className="justify-end flex" aria-label="Page navigation example">
-        <ul className="inline-flex  -space-x-px">
-          <li>
-            <button onClick={()=>setPage(page-1)} className="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</button>
-          </li>
-          {
-            page > 1 && (
+          <nav
+            className="justify-end flex"
+            aria-label="Page navigation example"
+          >
+            <ul className="inline-flex  -space-x-px">
               <li>
-              <button  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{page-1}</button>
-            </li>
-            )
-          }
-         
-        
-          <li>
-            <button  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{page>0 ?page :1}</button>
-          </li>
-          {
-            page > 0 && (
+                <button
+                  onClick={() => setPage(page - 1)}
+                  className="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                >
+                  Previous
+                </button>
+              </li>
+              {page > 1 && (
+                <li>
+                  <button className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    {page - 1}
+                  </button>
+                </li>
+              )}
+
               <li>
-              <button  className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{ page+1 }</button>
-            </li>
-            )
-          }
-           <li>
-            <button  onClick={()=>setPage(page+1)}  className="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</button>
-          </li>
-        </ul>
-      </nav>
+                <button className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  {page > 0 ? page : 1}
+                </button>
+              </li>
+              {page > 0 && (
+                <li>
+                  <button className="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                    {page + 1}
+                  </button>
+                </li>
+              )}
+              <li>
+                <button
+                  onClick={() => setPage(page + 1)}
+                  className="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
-        
       </div>
-  
     </div>
   );
 }

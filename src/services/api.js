@@ -18,7 +18,7 @@ export const getGenres = async () => {
   );
   return res.data.genres;
 };
-export const getGenresByMovies = async (genresId, sort,imdb,page) => {
+export const getGenresByMovies = async (genresId, sort, imdb, page) => {
   let url = `https://api.themoviedb.org/3/discover/movie?api_key=84c3ca08a3d308752200112e54823f34&language=tr-TR&page=${page}&with_genres=${genresId}`;
   if (sort) {
     url += "&primary_release_year=" + sort;
@@ -28,13 +28,18 @@ export const getGenresByMovies = async (genresId, sort,imdb,page) => {
   }
   const res = await axios(url);
 
-  console.log("url", url);
   return res.data.results;
 };
 
 export const getSmilarMovies = async (movieId) => {
   const res = await axios(
-       `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=84c3ca08a3d308752200112e54823f34&language=tr-TR&page=1`
-    );
+    `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=84c3ca08a3d308752200112e54823f34&language=tr-TR&page=1`
+  );
+  return res.data.results;
+};
+export const searchMovie = async (movie) => {
+  const res = await axios(
+    `https://api.themoviedb.org/3/search/movie?api_key=84c3ca08a3d308752200112e54823f34&language=en-US&page=1&query=${movie}`
+  );
   return res.data.results;
 };

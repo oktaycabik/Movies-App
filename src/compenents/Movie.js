@@ -5,16 +5,15 @@ import { getMovies, getSmilarMovies } from "../services/api";
 function Movie() {
   const [smilarMovies, setSmilarMovies] = useState([]);
   const [movie, setMovie] = useState({});
+  let { movieId } = useParams();
   useEffect(() => {
     (async () => {
-      const data = await getMovies(params.movieId);
-      const res = await getSmilarMovies(params.movieId);
+      const data = await getMovies(movieId);
+      const res = await getSmilarMovies(movieId);
       setMovie(data);
       setSmilarMovies(res);
     })();
-  }, []);
-  console.log("movie", smilarMovies);
-  let params = useParams();
+  }, [movieId]);
 
   return (
     <>
@@ -63,11 +62,12 @@ function Movie() {
             </div>
           </div>
         </div>
-   
+
         <div className="bg-white -mt-12 ">
-    
           <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-          <h1 className="mb-2 text-4xl font-semibold bg-slate-100 rounded-lg p-2 text-gray-500">Benzer Filmler</h1>
+            <h1 className="mb-2 text-4xl font-semibold bg-slate-100 rounded-lg p-2 text-gray-500">
+              Benzer Filmler
+            </h1>
             <div className=" grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {smilarMovies.map((movie) => (
                 <div key={movie.id} className="group relative">
